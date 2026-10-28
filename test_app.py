@@ -1,4 +1,4 @@
-
+import os
 import unittest
 from app import app
 
@@ -13,10 +13,15 @@ class TestApp(unittest.TestCase):
         self.assertEqual(rep.status_code, 200)
         self.assertEqual(rep.get_json(), {"status": "ok"})
 
+    
     def test_version(self):
         rep = self.client.get("/version")
         self.assertEqual(rep.status_code, 200)
-        self.assertEqual(rep.get_json(), {"version": "dev"})
+        self.assertEqual(
+        rep.get_json(),
+        {"version": os.getenv("APP_VERSION", "dev")}
+    )
+
 
     def test_hello(self):
         rep = self.client.get("/hello/Sara")
